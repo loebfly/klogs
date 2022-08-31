@@ -1,0 +1,3 @@
+log:
+  out: "console, file"
+  file: "/Users/luchunqing/Documents/QingGe/SourceTree/klogs/logs/bgp-ip-parse"
