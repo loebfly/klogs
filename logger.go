@@ -11,9 +11,15 @@ const (
 	LevelInfo  = "INFO"
 	LevelWarn  = "WARN"
 	LevelError = "ERROR"
+
+	OutConsole = "console"
+	OutFile    = "file"
 )
 
-// Logger 日志接口
+var (
+	logFile string
+)
+
 type Logger struct {
 	category string
 	level    string
@@ -49,9 +55,17 @@ func (logger Logger) outPut(format string, args ...interface{}) {
 	}
 
 	msg := fmt.Sprintf(format, args...)
-	fmt.Printf("[%s] [%s] (%s) [%s] %s\n",
-		createdAt.Format("2006-01-02 15:04:05"),
-		logger.category,
-		logger.level,
-		src, msg)
+
+	if config.Log.Out == OutFile {
+
+	} else if config.Log.Out == OutConsole {
+		fmt.Printf("[%s] [%s] (%s) [%s] %s\n",
+			createdAt.Format("2006-01-02 15:04:05"),
+			logger.category,
+			logger.level,
+			src, msg)
+	} else {
+
+	}
+
 }
