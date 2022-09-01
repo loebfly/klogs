@@ -68,13 +68,13 @@ func (logger Logger) outPut(format string, args ...interface{}) {
 	}
 
 	logStack := make([]string, 0)
-	logStack = append(logStack, createdAt)
+	level := "[" + logger.level + "]"
+	logStack = append(logStack, createdAt, level)
 	if logger.category != "" {
 		category := "[" + logger.category + "]"
 		logStack = append(logStack, category)
 	}
-	level := "[" + logger.level + "]"
-	logStack = append(logStack, level, src, format)
+	logStack = append(logStack, src, format)
 
 	if len(WillOutputHandlers) > 0 {
 		for _, handler := range WillOutputHandlers {
@@ -95,10 +95,10 @@ func (logger Logger) outPut(format string, args ...interface{}) {
 
 	log := strings.Join(logStack, " ")
 
-	if strings.Contains(config.Log.Out, OutConsole) {
+	if strings.Contains(config.Logger.Out, OutConsole) {
 		logger.outputToConsole(log)
 	}
-	if strings.Contains(config.Log.Out, OutFile) {
+	if strings.Contains(config.Logger.Out, OutFile) {
 		logger.outputToFile(log)
 	}
 }
@@ -111,7 +111,7 @@ func (logger Logger) outputToConsole(content string) {
 
 func (logger Logger) outputToFile(content string) {
 	// 写入log文件
-	filePath := config.Log.File + "."
+	filePath := config.Logger.File + "."
 	filePath += time.Now().Format("2006-01-02")
 	filePath += ".log"
 	fileDir := path.Dir(filePath)
@@ -150,7 +150,7 @@ func (logger Logger) outputToFile(content string) {
 		}
 	}(file)
 
-	_, err = file.WriteString(content)
+	_, err = file.WriteString(content + "\n")
 	if err != nil {
 		fmt.Println("log write to file failure:", err)
 		return

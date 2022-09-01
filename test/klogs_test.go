@@ -6,7 +6,7 @@ import (
 )
 
 func TestConsole(t *testing.T) {
-	err := klogs.Init("/Users/luchunqing/Documents/QingGe/SourceTree/klogs/test/app.yml")
+	err := klogs.Init("")
 	if err != nil {
 		t.Error(err)
 		return
@@ -14,7 +14,7 @@ func TestConsole(t *testing.T) {
 	klogs.WillOutputUse(func(c, level string) map[string]int {
 		if c == "HTTP" {
 			return map[string]int{
-				"treeId:73523242": 100,
+				"[TraceId:73523242]": 2,
 			}
 		}
 		return nil
